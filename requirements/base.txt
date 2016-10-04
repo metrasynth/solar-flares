@@ -1,0 +1,5 @@
+numpy
+scipy
+sounddevice
+git+https://github.com/metrasynth/radiant-voices
+git+https://github.com/metrasynth/sunvox-dll-python
