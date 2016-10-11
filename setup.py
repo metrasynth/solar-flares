@@ -4,6 +4,7 @@ from setuptools import find_packages, setup
 
 dependencies = [
     'numpy',
+    'orbitant',
     'radiant-voices',
     'scipy',
     'sounddevice',
