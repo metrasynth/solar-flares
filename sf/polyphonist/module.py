@@ -42,16 +42,15 @@ class ModulePolyphonist(object):
                     poly.user_defined,
             ):
                 poly_ctl.label = orig_ctl.label
-                poly_ctl.detached = orig_ctl.detached
                 ctl_name = 'user_defined_{}'.format(ctl_num + 1)
                 ctl_value = getattr(orig, ctl_name)
                 multi_ctl = p.new_module(m.MultiCtl, value=ctl_value)
+                multi_ctl.name = poly_ctl.label
                 multi_ctl >> clones
                 multi_ctl.x = p.output.x - 1024
                 multi_ctl.y = p.output.y + ctl_num * 256
                 for i, clone in enumerate(clones):
-                    multi_ctl.mappings.values[i].controller = ctl_num + 5
-                # mappings[ctl_num].module = multi_ctl.index + 1
+                    multi_ctl.mappings.values[i].controller = ctl_num + 6
                 mappings[ctl_num].module = multi_ctl.index
                 mappings[ctl_num].controller = 1
                 setattr(poly, ctl_name, ctl_value)
@@ -65,6 +64,7 @@ class ModulePolyphonist(object):
                 user_ctl.label = ctl_name
                 ctl_value = ctl_value.value if isinstance(ctl_value, Enum) else ctl_value
                 multi_ctl = p.new_module(m.MultiCtl, value=ctl_value)
+                multi_ctl.name = user_ctl.label
                 multi_ctl >> clones
                 multi_ctl.x = p.output.x - 1024
                 multi_ctl.y = p.output.y + ctl_num * 256
