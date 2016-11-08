@@ -1,6 +1,6 @@
 import logging
 
-import rv
+import rv.api
 import sunvox
 
 

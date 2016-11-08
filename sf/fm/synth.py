@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-import rv
+import rv.api
 import sf
 
 
