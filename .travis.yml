@@ -2,7 +2,6 @@ language: python
 python:
   - "3.5"
   - "3.5-dev"
-  - "nightly"
 install:
   - "sudo apt-get -qq update"
   - "sudo apt-get -y install libsdl1.2-dev graphviz"
