@@ -1,8 +1,6 @@
 numpy
-orbitant
-radiant-voices
 scipy
 sounddevice
-sunvox-dll-python
+git+https://github.com/metrasynth/orbitant
 git+https://github.com/metrasynth/radiant-voices
 git+https://github.com/metrasynth/sunvox-dll-python
