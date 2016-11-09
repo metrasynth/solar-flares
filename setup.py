@@ -1,6 +1,14 @@
-""""""
+"""Sound design and performance tools for SunVox"""
 
+import io
+import os
+import re
+import sys
 from setuptools import find_packages, setup
+
+SETUP_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+sys.path.append(SETUP_DIR)
+import sf  # NOQA isort:skip
 
 dependencies = [
     'numpy',
@@ -11,15 +19,27 @@ dependencies = [
     'sunvox-dll-python',
 ]
 
+
+def read(*names, **kwargs):
+    return io.open(
+        os.path.join(os.path.dirname(__file__), *names),
+        encoding=kwargs.get('encoding', 'utf8')
+    ).read()
+
+
 setup(
     name='solar-flares',
-    version='0.1.0',
+    version=sf.__version__,
     url='https://github.com/metrasynth/solar-flares',
     license='MIT',
     author='Matthew Scott',
     author_email='matt@11craft.com',
-    description='Sound design and performance tools for SunVox',
-    long_description=__doc__,
+    description=__doc__,
+    long_description='%s\n%s' % (
+        re.compile(r'^\.\.\s+start-badges.*^\.\.\s+end-badges', re.M | re.S).
+            sub('', read('README.rst')),
+        re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
+    ),
     packages=find_packages(exclude=['docs', 'examples', 'tests']),
     include_package_data=True,
     zip_safe=False,
