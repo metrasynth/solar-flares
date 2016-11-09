@@ -20,3 +20,6 @@ global-exclude *.py[cod] __pycache__ *.so *.dylib
 
 include *.txt
 recursive-include requirements *.txt
+
+include flit.ini
+include pytest.ini
