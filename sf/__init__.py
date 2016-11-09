@@ -3,4 +3,3 @@
 __version__ = '0.1.0'
 
 import sf.fm
-from sf.notebook import *
