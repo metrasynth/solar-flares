@@ -1,6 +1,6 @@
 from copy import copy
 
-from rv import read_sunvox_file, NOTECMD, Note, Pattern, Project
+from rv import NOTECMD, Note, Pattern, Project, read_sunvox_file
 
 
 OFF = Note(note=NOTECMD.NOTE_OFF)
@@ -78,7 +78,10 @@ class PatternPolyphonist(object):
                 off_track = off_meta_track + 1
                 last_track_note_was_poly = track['last_module'] == mono_module
                 this_note_is_poly = note.module - 1 == mono_module
-                last_voice = voices[track['last_voice']] if track['last_voice'] else None
+                last_voice = \
+                    voices[track['last_voice']] \
+                    if track['last_voice'] \
+                    else None
                 voice_not_reallocated = (
                     not last_voice or
                     last_voice['last_track'] == trackno
@@ -95,7 +98,7 @@ class PatternPolyphonist(object):
                         note_meta.val = current_voice + min_voice
                         voices[current_voice]['last_track'] = None
                 elif note.note != NOTECMD.EMPTY:
-                    off_note = poly_line[off_track] = copy(OFF)
+                    poly_line[off_track] = copy(OFF)
                     if last_track_note_was_poly and voice_not_reallocated:
                         off_meta = poly_line[off_meta_track]
                         off_meta.module = poly_module + 1

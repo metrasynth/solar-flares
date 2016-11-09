@@ -1,6 +1,6 @@
 from enum import Enum
 
-from rv import m, read_sunvox_file, Project, Synth
+from rv import Project, Synth, m, read_sunvox_file
 
 
 class ModulePolyphonist(object):
@@ -37,9 +37,9 @@ class ModulePolyphonist(object):
             poly.tpl = orig.tpl
             poly.user_defined_controllers = orig.user_defined_controllers
             for ctl_num, orig_ctl, poly_ctl in zip(
-                    range(orig.user_defined_controllers),  # acts as a limiter
-                    orig.user_defined,
-                    poly.user_defined,
+                range(orig.user_defined_controllers),  # acts as a limiter
+                orig.user_defined,
+                poly.user_defined,
             ):
                 poly_ctl.label = orig_ctl.label
                 ctl_name = 'user_defined_{}'.format(ctl_num + 1)
@@ -62,7 +62,10 @@ class ModulePolyphonist(object):
             )):
                 user_ctl_name = 'user_defined_{}'.format(ctl_num + 1)
                 user_ctl.label = ctl_name
-                ctl_value = ctl_value.value if isinstance(ctl_value, Enum) else ctl_value
+                ctl_value = \
+                    ctl_value.value \
+                    if isinstance(ctl_value, Enum) \
+                    else ctl_value
                 multi_ctl = p.new_module(m.MultiCtl, value=ctl_value)
                 multi_ctl.name = user_ctl.label
                 multi_ctl >> clones
