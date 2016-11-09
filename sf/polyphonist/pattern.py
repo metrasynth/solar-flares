@@ -1,6 +1,6 @@
 from copy import copy
 
-from rv import NOTECMD, Note, Pattern, Project, read_sunvox_file
+from rv.api import NOTECMD, Note, Pattern, Project, read_sunvox_file
 
 
 OFF = Note(note=NOTECMD.NOTE_OFF)

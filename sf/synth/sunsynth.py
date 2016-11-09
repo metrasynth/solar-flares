@@ -12,8 +12,8 @@ class SunSynth(object):
         """
         logging.debug('filename=%r', filename)
         self.filename = filename
-        synth = rv.read_sunvox_file(filename)
-        self.project = rv.Project()
+        synth = rv.api.read_sunvox_file(filename)
+        self.project = rv.api.Project()
         self.project.attach_module(synth.module)
         self.module = synth.module
         synth.module >> self.project.output

@@ -1,21 +1,21 @@
 from collections import defaultdict
 
-import rv.api
 import sf
+from rv.api import Synth, m
 
 
 def sin_generator(name):
-    return rv.m.Generator(waveform='sin', name=name, polyphony_ch=1)
+    return m.Generator(waveform='sin', name=name, polyphony_ch=1)
 
 
-class Synth(rv.Synth):
+class Synth(Synth):
 
     _forward_graph = None
     _reverse_graph = None
     _operator_names = None
 
     def __init__(self, algorithm=None, name='sf.fm.Synth', factories=None):
-        super(Synth, self).__init__(module=rv.m.MetaModule(name=name))
+        super(Synth, self).__init__(module=m.MetaModule(name=name))
         self.algorithm = algorithm or sf.fm.PRESETS[1][0]
         if isinstance(factories, list):
             self.factories = factories
@@ -71,7 +71,7 @@ class Synth(rv.Synth):
 
     def _build_note_input(self):
         p = self.module.project
-        self._note_input = p.new_module(rv.m.MultiSynth, name='note in')
+        self._note_input = p.new_module(m.MultiSynth, name='note in')
 
     def _build_operators(self):
         self._operators = {}
@@ -81,12 +81,12 @@ class Synth(rv.Synth):
         self._operator_multis = {}
         p = self.module.project
         for name, factory in zip(self.operator_names, self.factories):
-            multi = rv.m.MultiSynth(name='{} note'.format(name))
+            multi = m.MultiSynth(name='{} note'.format(name))
             oper = factory(name='{} oper'.format(name))
-            c_amp = rv.m.Amplifier(name='{} c amp'.format(name))
-            m_amp = rv.m.Amplifier(name='{} m amp'.format(name))
-            mod = rv.m.Modulator(modulation_type='phase',
-                                 name='{} mod'.format(name))
+            c_amp = m.Amplifier(name='{} c amp'.format(name))
+            m_amp = m.Amplifier(name='{} m amp'.format(name))
+            mod = m.Modulator(modulation_type='phase',
+                              name='{} mod'.format(name))
             p += [multi, oper, c_amp, m_amp, mod]
             multi >> oper >> c_amp >> mod
             m_amp >> mod
@@ -98,7 +98,7 @@ class Synth(rv.Synth):
 
     def _build_output_volume(self):
         p = self.module.project
-        self._volume_amp = p.new_module(rv.m.Amplifier, name='vol')
+        self._volume_amp = p.new_module(m.Amplifier, name='vol')
         self._volume_amp >> p.output
 
     def _connect_algorithm(self):
@@ -112,10 +112,10 @@ class Synth(rv.Synth):
             for src_key in src_keys:
                 src_mod = self._operator_mods[src_key]
                 if src_key == dest_key:
-                    fb1 = p.new_module(rv.m.Feedback, volume=0)
-                    fb2 = p.new_module(rv.m.Feedback, volume=0)
+                    fb1 = p.new_module(m.Feedback, volume=0)
+                    fb2 = p.new_module(m.Feedback, volume=0)
                     fb_ctl = p.new_module(
-                        rv.m.MultiCtl,
+                        m.MultiCtl,
                         value=0,
                         name='{} fb'.format(src_key),
                         mappings=[

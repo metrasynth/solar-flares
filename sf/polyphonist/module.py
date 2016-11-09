@@ -1,6 +1,6 @@
 from enum import Enum
 
-from rv import Project, Synth, m, read_sunvox_file
+from rv.api import Project, Synth, m, read_sunvox_file
 
 
 class ModulePolyphonist(object):
