@@ -13,6 +13,7 @@ import sf  # NOQA isort:skip
 dependencies = [
     'numpy',
     'orbitant',
+    'py',
     'radiant-voices',
     'scipy',
     'sounddevice',
