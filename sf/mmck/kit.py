@@ -1,3 +1,5 @@
+import json
+
 import rv.api
 from sf.lib.pymodule import forget, from_string, remember
 from . import parameters, project
@@ -101,3 +103,18 @@ class Kit(object):
             self._project_module = None
         else:
             raise ValueError('can only set to None')
+
+    def to_json(self):
+        return json.dumps({
+            'mmck_version': 1,
+            'parameter_factory_source': self.parameter_factory_source,
+            'parameter_values': list(self.parameter_values.items()),
+            'project_factory_source': self.project_factory_source,
+        }, indent=2)
+
+    def load_json(self, src):
+        data = json.loads(src)
+        if data['mmck_version'] == 1:
+            self.parameter_factory_source = data['parameter_factory_source']
+            self.parameter_values.update(data['parameter_values'])
+            self.project_factory_source = data['project_factory_source']
