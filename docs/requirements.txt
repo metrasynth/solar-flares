@@ -1,6 +1,6 @@
 plantweb
 docutils>=0.13.1
-sphinx>=1.3
+sphinx>=1.5.1
 hg+https://bitbucket.org/gldnspud/sphinx-contrib#egg=sphinxcontrib-exceltable&subdirectory=exceltable
 sphinx-rtd-theme
 
