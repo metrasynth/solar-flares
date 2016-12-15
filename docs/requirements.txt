@@ -1,6 +1,6 @@
 plantweb
 sphinx>=1.3
-sphinxcontrib-exceltable
+hg+https://bitbucket.org/gldnspud/sphinx-contrib#egg=sphinxcontrib-exceltable&subdirectory=exceltable
 sphinx-rtd-theme
 
 git+https://github.com/metrasynth/radiant-voices#egg=radiant-voices
