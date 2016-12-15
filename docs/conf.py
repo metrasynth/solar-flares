@@ -36,6 +36,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
     'plantweb.directive',
+    'sphinxcontrib.exceltable',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

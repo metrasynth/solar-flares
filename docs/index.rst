@@ -5,6 +5,9 @@ Contents
     :maxdepth: 2
 
     readme
+    mmck
+    particles
+    polyphonist
     contributing
     changelog
     authors
