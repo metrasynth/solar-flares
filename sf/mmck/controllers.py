@@ -1,11 +1,6 @@
 from sf.lib.orderedattrdict import OrderedAttrDict
 
 
-c = None
-p = None
-project = None
-
-
 class Controller(object):
 
     def __init__(self, module, name):
@@ -42,7 +37,4 @@ class Group(OrderedAttrDict):
 __all__ = [
     'Controller',
     'Group',
-    'c',
-    'p',
-    'project',
 ]

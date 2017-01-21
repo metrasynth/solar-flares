@@ -1,9 +1,6 @@
 from sf.lib.orderedattrdict import OrderedAttrDict
 
 
-p = None
-
-
 class Parameters(OrderedAttrDict):
     pass
 

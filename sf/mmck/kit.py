@@ -1,120 +1,62 @@
 import json
 
 import rv.api
+from sf.error import SFValueError
 from sf.lib.pymodule import forget, from_string, remember
-from . import parameters, project
+from . import parameters, controllers
 from .parameters import Parameters, ParameterValues
 
 
 class Kit(object):
 
     def __init__(self):
-        self._parameter_factory_source = ''
-        self._parameter_module = None
-        self._project_factory_source = ''
-        self._project_module = None
+        self.name = 'kit'
+        self._py_source = None
+        self._py_module = None
         self.parameter_values = ParameterValues()
-        self.parameter_values_dirty = False
+
+    @property
+    def py_source(self):
+        return self._py_source
+
+    @py_source.setter
+    def py_source(self, src):
+        self._py_source = src
+        _ = self.py_module
+
+    @property
+    def py_module(self):
+        if self._py_source is None:
+            raise SFValueError('set py_source before getting py_module')
+        if self._py_module is None:
+            self._py_module = remember(from_string(
+                name='_mmck_{}_{}'.format(self.name, id(self)),
+                source=self.py_source,
+            ))
+        return self._py_module
+
+    @py_module.setter
+    def py_module(self, value):
+        if value is None:
+            if self._py_module is not None:
+                forget(self._py_module)
+                self._py_module = None
+        else:
+            raise SFValueError('can only be set to None')
 
     @property
     def parameters(self):
-        return self.parameter_module.p
-
-    @property
-    def parameter_factory_source(self):
-        return self._parameter_factory_source
-
-    @parameter_factory_source.setter
-    def parameter_factory_source(self, value):
-        self._parameter_factory_source = value
-        self.parameter_module = None
-        self.project_module = None
-
-    @property
-    def parameter_factory_source_clean(self):
-        return self._parameter_module is not None
-
-    @property
-    def parameter_module(self):
-        if self._parameter_module is None:
-            parameters.p = Parameters()
-            try:
-                self._parameter_module = remember(from_string(
-                    name='_kit_{}.parameter'.format(id(self)),
-                    source=self._parameter_factory_source,
-                ))
-                for name, param in self._parameter_module.p.items():
-                    if name not in self.parameter_values:
-                        self.parameter_values[name] = param.default
-            finally:
-                parameters.p = None
-        return self._parameter_module
-
-    @parameter_module.setter
-    def parameter_module(self, value):
-        if value is None:
-            forget(self._parameter_module)
-            self._parameter_module = None
-        else:
-            raise ValueError('can only set to None')
+        p = Parameters()
+        self.py_module.set_parameters(p=p, P=parameters)
+        for name, param in p.items():
+            if name not in self.parameter_values:
+                self.parameter_values[name] = param.default
+        return p
 
     @property
     def project(self):
-        return self.project_module.project
-
-    @property
-    def project_factory_source(self):
-        return self._project_factory_source
-
-    @project_factory_source.setter
-    def project_factory_source(self, value):
-        self._project_factory_source = value
-        self.project_module = None
-
-    @property
-    def project_factory_source_clean(self):
-        return (
-            self._project_module is not None
-            and not self.parameter_values_dirty
-        )
-
-    @property
-    def project_module(self):
-        if not self.project_factory_source_clean:
-            project.c = project.Group()
-            project.p = self.parameter_values.copy()
-            project.project = rv.api.Project()
-            try:
-                forget(self._project_module)
-                self._project_module = remember(from_string(
-                    name='_kit_{}.project'.format(id(self)),
-                    source=self._project_factory_source,
-                ))
-            finally:
-                project.c = None
-                project.p = None
-                project.project = None
-        return self._project_module
-
-    @project_module.setter
-    def project_module(self, value):
-        if value is None:
-            forget(self._project_module)
-            self._project_module = None
-        else:
-            raise ValueError('can only set to None')
-
-    def to_json(self):
-        return json.dumps({
-            'mmck_version': 1,
-            'parameter_factory_source': self.parameter_factory_source,
-            'parameter_values': list(self.parameter_values.items()),
-            'project_factory_source': self.project_factory_source,
-        }, indent=2)
-
-    def load_json(self, src):
-        data = json.loads(src)
-        if data['mmck_version'] == 1:
-            self.parameter_factory_source = data['parameter_factory_source']
-            self.parameter_values.update(data['parameter_values'])
-            self.project_factory_source = data['project_factory_source']
+        p = self.parameter_values.copy()
+        c = controllers.Group()
+        project = rv.api.Project()
+        self.py_module.build_project(p=p, c=c, project=project)
+        return project, c
