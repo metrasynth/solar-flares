@@ -13,6 +13,7 @@ class Kit(object):
         self.name = 'kit'
         self._py_source = None
         self._py_module = None
+        self._project = None
         self.parameter_values = ParameterValues()
 
     @property
@@ -23,6 +24,7 @@ class Kit(object):
     def py_source(self, src):
         self._py_source = src
         _ = self.py_module
+        self._project = None
 
     @property
     def py_module(self):
@@ -41,6 +43,7 @@ class Kit(object):
             if self._py_module is not None:
                 forget(self._py_module)
                 self._py_module = None
+                self._project = None
         else:
             raise SFValueError('can only be set to None')
 
@@ -54,9 +57,21 @@ class Kit(object):
         return p
 
     @property
+    def controllers(self):
+        self.project
+        return self._controllers
+
+    @property
     def project(self):
-        p = self.parameter_values.copy()
-        c = controllers.Group()
-        project = rv.api.Project()
-        self.py_module.build_project(p=p, c=c, project=project)
-        return project, c
+        if self._project is None:
+            p = self.parameter_values.copy()
+            c = controllers.Group()
+            project = rv.api.Project()
+            self.py_module.build_project(p=p, c=c, project=project)
+            self._controllers = c
+            self._project = project
+        return self._project
+
+    @project.deleter
+    def project(self):
+        self._project = None
