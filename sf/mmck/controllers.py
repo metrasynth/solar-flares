@@ -9,7 +9,10 @@ class Controller(object):
 
     @property
     def ctl(self):
-        return self.module.controllers[self.name]
+        c = self.module.controllers[self.name]
+        if hasattr(self.module, 'user_defined') and c.number >= 6:
+            c = self.module.user_defined[c.number - 6]
+        return c
 
     @property
     def value(self):
