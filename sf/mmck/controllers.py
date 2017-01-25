@@ -25,6 +25,9 @@ class Controller(object):
 
 class Group(OrderedAttrDict):
 
+    def __init__(self, **kwds):
+        super().__init__(default=Group, **kwds)
+
     def __setitem__(self, key, value, **kwargs):
         if isinstance(value, tuple) and len(value) == 2:
             module, name = value
