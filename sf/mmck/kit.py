@@ -23,6 +23,7 @@ class Kit(object):
     @py_source.setter
     def py_source(self, src):
         self._py_source = src
+        self.py_module = None
         _ = self.py_module
         self._project = None
 
