@@ -63,6 +63,13 @@ class Kit(object):
         return self._controllers
 
     @property
+    def watch_paths(self):
+        if hasattr(self.py_module, 'watch_paths'):
+            return list(self.py_module.watch_paths(self.parameter_values))
+        else:
+            return []
+
+    @property
     def project(self):
         if self._project is None:
             p = self.parameter_values.copy()
