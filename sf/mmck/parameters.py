@@ -24,6 +24,13 @@ class Integer(Parameter):
         self.step = step
 
 
+class PathList(Parameter):
+
+    def __init__(self, default=None, label=None):
+        default = default if default is not None else []
+        super().__init__(default, label)
+
+
 class String(Parameter):
 
     def __init__(self, default=None, label=None, choices=None):
