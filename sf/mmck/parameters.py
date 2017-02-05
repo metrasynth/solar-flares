@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from sf.lib.orderedattrdict import OrderedAttrDict
 
 
@@ -22,6 +24,13 @@ class Integer(Parameter):
         super(Integer, self).__init__(default, label)
         self.range = range
         self.step = step
+
+
+class KeyValuePairs(Parameter):
+
+    def __init__(self, default=None, label=None):
+        default = default if default is not None else OrderedDict()
+        super().__init__(default, label)
 
 
 class PathList(Parameter):
