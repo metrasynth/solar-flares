@@ -11,11 +11,9 @@ sys.path.append(SETUP_DIR)
 import sf  # NOQA isort:skip
 
 dependencies = [
-    'numpy',
     'orbitant',
     'py',
     'radiant-voices',
-    'scipy',
     'sounddevice',
     'sunvox-dll-python',
 ]
