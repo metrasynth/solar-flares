@@ -22,6 +22,17 @@ class Controller(object):
     def value(self, value):
         setattr(self.module, self.name, value)
 
+    @staticmethod
+    def to_json(python_object):
+        if isinstance(python_object, Controller):
+            module = python_object.module
+            name = python_object.name
+            return dict(
+                module=module.index,
+                controller=module.controllers[name].number,
+            )
+        raise TypeError(repr(python_object) + ' is not JSON serializable')
+
 
 class Group(OrderedAttrDict):
 
@@ -38,6 +49,13 @@ class Group(OrderedAttrDict):
                 'or Group instance'
             )
         super().__setitem__(key, value, **kwargs)
+
+    def all_items(self):
+        for key, value in self.items():
+            if isinstance(value, Group):
+                yield (key, list(value.all_items()))
+            else:
+                yield (key, value)
 
 
 __all__ = [
