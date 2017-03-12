@@ -1,5 +1,3 @@
-import json
-
 import rv.api
 from sf.error import SFValueError
 from sf.lib.pymodule import forget, from_string, remember
