@@ -1,3 +1,5 @@
+from random import randint
+
 import rv.api
 from sf.error import SFValueError
 from sf.lib.pymodule import forget, from_string, remember
@@ -31,7 +33,7 @@ class Kit(object):
             raise SFValueError('set py_source before getting py_module')
         if self._py_module is None:
             self._py_module = remember(from_string(
-                name='_mmck_{}_{}'.format(self.name, id(self)),
+                name='_mmck_{}_{}_{}'.format(self.name, id(self), randint(0, 2**16)),
                 source=self.py_source,
             ))
         return self._py_module
