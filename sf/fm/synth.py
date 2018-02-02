@@ -29,7 +29,7 @@ class Synth(Synth):
         self._build_output_volume()
         self._connect_algorithm()
         self._connect_note_input()
-        self.module.project.layout(factor=2)
+        self.module.project.layout()
 
     @property
     def forward_graph(self):
