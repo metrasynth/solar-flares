@@ -1,10 +1,10 @@
 language: python
 python:
-  - "3.5"
-  - "3.5-dev"
+  - "3.6"
+  - "3.6-dev"
 install:
   - "sudo apt-get -qq update"
-  - "sudo apt-get -y install libsdl1.2-dev graphviz"
+  - "sudo apt-get -y install libsdl1.2-dev"
   - "pip install git+https://github.com/metrasynth/sunvox-dll-python"
   - "pip install git+https://github.com/metrasynth/radiant-voices"
   - "pip install -r requirements/tests.txt"

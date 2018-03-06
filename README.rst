@@ -70,4 +70,4 @@ that wraps the Solar Flares tools.
 Requirements
 ------------
 
-- Python 3.5
+- Python 3.6
