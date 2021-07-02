@@ -1,8 +1,13 @@
 from sf.lib.orderedattrdict import OrderedAttrDict
 
 
-class Controller(object):
+__all__ = [
+    "Controller",
+    "Group",
+]
 
+
+class Controller(object):
     def __init__(self, module, name):
         self.module = module
         self.name = name
@@ -10,7 +15,7 @@ class Controller(object):
     @property
     def ctl(self):
         c = self.module.controllers[self.name]
-        if hasattr(self.module, 'user_defined') and c.number >= 6:
+        if hasattr(self.module, "user_defined") and c.number >= 6:
             c = self.module.user_defined[c.number - 6]
         return c
 
@@ -31,11 +36,10 @@ class Controller(object):
                 module=module.index,
                 controller=module.controllers[name].number,
             )
-        raise TypeError(repr(python_object) + ' is not JSON serializable')
+        raise TypeError(repr(python_object) + " is not JSON serializable")
 
 
 class Group(OrderedAttrDict):
-
     def __init__(self, **kwds):
         super().__init__(default=Group, **kwds)
 
@@ -45,20 +49,13 @@ class Group(OrderedAttrDict):
             value = Controller(module, name)
         elif not isinstance(value, (Controller, Group)):
             raise ValueError(
-                'Value must be a 2-tuple, Controller instance, '
-                'or Group instance'
+                "Value must be a 2-tuple, Controller instance, " "or Group instance"
             )
-        super().__setitem__(key, value, **kwargs)
+        super().__setitem__(key, value)
 
     def all_items(self):
         for key, value in self.items():
             if isinstance(value, Group):
-                yield (key, list(value.all_items()))
+                yield key, list(value.all_items())
             else:
-                yield (key, value)
-
-
-__all__ = [
-    'Controller',
-    'Group',
-]
+                yield key, value
