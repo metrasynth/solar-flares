@@ -1,10 +1,6 @@
-from collections import OrderedDict
-
-
-class OrderedAttrDict(OrderedDict):
-
+class OrderedAttrDict(dict):
     def __init__(self, default=None, **kwds):
-        self.__dict__['_default'] = default
+        self.__dict__["_default"] = default
         super().__init__(**kwds)
 
     def __getattr__(self, item):
@@ -15,9 +11,11 @@ class OrderedAttrDict(OrderedDict):
 
     def __getitem__(self, item):
         d = self
-        parts = item.split('.')
+        parts = item.split(".")
         for name in parts:
-            if not super(OrderedAttrDict, d).__contains__(name) and callable(self._default):
+            if not super(OrderedAttrDict, d).__contains__(name) and callable(
+                self._default
+            ):
                 v = self._default()
                 super(OrderedAttrDict, d).__setitem__(name, v)
             d = super(OrderedAttrDict, d).__getitem__(name)
@@ -25,7 +23,7 @@ class OrderedAttrDict(OrderedDict):
 
     def __contains__(self, item):
         d = self
-        parts = item.split('.')
+        parts = item.split(".")
         for name in parts[:-1]:
             if not super(OrderedAttrDict, d).__contains__(name):
                 return False
@@ -38,3 +36,6 @@ class OrderedAttrDict(OrderedDict):
             self[key] = value
         except KeyError:
             raise AttributeError()
+
+    def copy(self):
+        return OrderedAttrDict(**self)
